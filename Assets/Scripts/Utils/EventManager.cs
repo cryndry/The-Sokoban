@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class EventManager : LazySingleton<EventManager>
 {
-    public event Action<Vector2> OnMove;
-    public void InvokeOnMove(Vector2 movement)
+    public event Action<Vector2Int> OnMove;
+    public void InvokeOnMove(Vector2Int movement)
     {
         OnMove?.Invoke(movement);
     }

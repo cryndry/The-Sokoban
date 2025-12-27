@@ -30,8 +30,22 @@ public class InputManager : LazySingleton<InputManager>
 
     private void OnMoveInput(InputAction.CallbackContext context)
     {
-        Vector2 movement = inputSystemActions.Player.Move.ReadValue<Vector2>();
-        EventManager.Instance.InvokeOnMove(movement);
+        Vector2 rawInput = inputSystemActions.Player.Move.ReadValue<Vector2>();
+
+        // "Deadzone" check
+        if (rawInput.magnitude < 0.5f) return;
+
+        Vector2Int direction;
+        if (Mathf.Abs(rawInput.x) > Mathf.Abs(rawInput.y))
+        {
+            direction = rawInput.x > 0 ? Vector2Int.right : Vector2Int.left;
+        }
+        else
+        {
+            direction = rawInput.y > 0 ? Vector2Int.up : Vector2Int.down;
+        }
+
+        EventManager.Instance.InvokeOnMove(direction);
     }
 
     private void OnUndo(InputAction.CallbackContext context)
