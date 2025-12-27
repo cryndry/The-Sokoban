@@ -102,7 +102,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Previous"",
+                    ""name"": ""Undo"",
                     ""type"": ""Button"",
                     ""id"": ""2776c80d-3c14-4091-8c56-d04ced07a2b0"",
                     ""expectedControlType"": """",
@@ -111,10 +111,10 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Next"",
+                    ""name"": ""Redo"",
                     ""type"": ""Button"",
                     ""id"": ""b7230bb6-fc9b-4f52-8b25-f5e19cb2c2ba"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -260,7 +260,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Next"",
+                    ""action"": ""Redo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -271,7 +271,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Next"",
+                    ""action"": ""Redo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -282,7 +282,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Previous"",
+                    ""action"": ""Undo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -293,7 +293,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Previous"",
+                    ""action"": ""Undo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -882,8 +882,8 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_Previous = m_Player.FindAction("Previous", throwIfNotFound: true);
-        m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
+        m_Player_Undo = m_Player.FindAction("Undo", throwIfNotFound: true);
+        m_Player_Redo = m_Player.FindAction("Redo", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -978,8 +978,8 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_Previous;
-    private readonly InputAction m_Player_Next;
+    private readonly InputAction m_Player_Undo;
+    private readonly InputAction m_Player_Redo;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -996,13 +996,13 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Move => m_Wrapper.m_Player_Move;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Previous".
+        /// Provides access to the underlying input action "Player/Undo".
         /// </summary>
-        public InputAction @Previous => m_Wrapper.m_Player_Previous;
+        public InputAction @Undo => m_Wrapper.m_Player_Undo;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Next".
+        /// Provides access to the underlying input action "Player/Redo".
         /// </summary>
-        public InputAction @Next => m_Wrapper.m_Player_Next;
+        public InputAction @Redo => m_Wrapper.m_Player_Redo;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1032,12 +1032,12 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @Previous.started += instance.OnPrevious;
-            @Previous.performed += instance.OnPrevious;
-            @Previous.canceled += instance.OnPrevious;
-            @Next.started += instance.OnNext;
-            @Next.performed += instance.OnNext;
-            @Next.canceled += instance.OnNext;
+            @Undo.started += instance.OnUndo;
+            @Undo.performed += instance.OnUndo;
+            @Undo.canceled += instance.OnUndo;
+            @Redo.started += instance.OnRedo;
+            @Redo.performed += instance.OnRedo;
+            @Redo.canceled += instance.OnRedo;
         }
 
         /// <summary>
@@ -1052,12 +1052,12 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @Previous.started -= instance.OnPrevious;
-            @Previous.performed -= instance.OnPrevious;
-            @Previous.canceled -= instance.OnPrevious;
-            @Next.started -= instance.OnNext;
-            @Next.performed -= instance.OnNext;
-            @Next.canceled -= instance.OnNext;
+            @Undo.started -= instance.OnUndo;
+            @Undo.performed -= instance.OnUndo;
+            @Undo.canceled -= instance.OnUndo;
+            @Redo.started -= instance.OnRedo;
+            @Redo.performed -= instance.OnRedo;
+            @Redo.canceled -= instance.OnRedo;
         }
 
         /// <summary>
@@ -1366,19 +1366,19 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMove(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Previous" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Undo" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnPrevious(InputAction.CallbackContext context);
+        void OnUndo(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Next" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Redo" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnNext(InputAction.CallbackContext context);
+        void OnRedo(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
