@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Box : Block, ICanMove
 {
-    override public GameObjectTypes BlockType { get; } = GameObjectTypes.BOX;
+    override public BlockType BlockType { get; } = BlockType.BOX;
 
     private bool isOnTarget = false;
     public bool IsOnTarget

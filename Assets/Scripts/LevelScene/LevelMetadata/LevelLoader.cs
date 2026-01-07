@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class LevelLoader : LazySingleton<LevelLoader>
 {
-    private readonly Dictionary<char, GameObjectTypes> tileMappings = new();
+    private readonly Dictionary<char, BlockType> tileMappings = new();
 
 
     private void Awake()
     {
-        System.Array enumValues = System.Enum.GetValues(typeof(GameObjectTypes));
-        foreach (GameObjectTypes type in enumValues)
+        System.Array enumValues = System.Enum.GetValues(typeof(BlockType));
+        foreach (BlockType type in enumValues)
         {
             char key = (char)type;
             tileMappings.Add(key, type);
@@ -47,7 +47,7 @@ public class LevelLoader : LazySingleton<LevelLoader>
         {
             grid_width = levelJson.width,
             grid_height = levelJson.height,
-            grid = new GameObjectTypes[levelJson.height, levelJson.width],
+            grid = new BlockType[levelJson.height, levelJson.width],
         };
 
         for (int i = 0; i < levelJson.height; i++)
@@ -55,7 +55,7 @@ public class LevelLoader : LazySingleton<LevelLoader>
             string row = levelJson.grid[i];
             for (int j = 0; j < levelJson.width; j++)
             {
-                levelData.grid[i, j] = j < row.Length ? tileMappings[row[j]] : GameObjectTypes.FLOOR;
+                levelData.grid[i, j] = j < row.Length ? tileMappings[row[j]] : BlockType.FLOOR;
             }
         }
 

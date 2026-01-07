@@ -1,6 +1,6 @@
 public class Wall : Block
 {
-    override public GameObjectTypes BlockType { get; } = GameObjectTypes.WALL;
+    override public BlockType BlockType { get; } = BlockType.WALL;
 
     private void Awake()
     {

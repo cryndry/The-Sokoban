@@ -9,7 +9,7 @@ public class BlockGenerator : LazySingleton<BlockGenerator>
     [SerializeField] private GameObject floorPrefab;
     [SerializeField] private GameObject targetPrefab;
 
-    public Block GenerateBlock(GameObjectTypes type, Vector3 position)
+    public Block GenerateBlock(BlockType type, Vector3 position)
     {
         LevelTheme activeLevelTheme = ThemeManager.Instance.ActiveLevelTheme;
 
@@ -18,9 +18,9 @@ public class BlockGenerator : LazySingleton<BlockGenerator>
 
         switch (type)
         {
-            case GameObjectTypes.TARGET:
-            case GameObjectTypes.BOX_ON_TARGET:
-            case GameObjectTypes.PLAYER_ON_TARGET:
+            case BlockType.TARGET:
+            case BlockType.BOX_ON_TARGET:
+            case BlockType.PLAYER_ON_TARGET:
                 GameObject target = Instantiate(targetPrefab, position, Quaternion.identity, blocksParent);
                 target.GetComponentInChildren<SpriteRenderer>().sprite = activeLevelTheme.targetSprite;
                 break;
@@ -31,21 +31,21 @@ public class BlockGenerator : LazySingleton<BlockGenerator>
         Block block = null;
         switch (type)
         {
-            case GameObjectTypes.BOX:
+            case BlockType.BOX:
                 {
                     GameObject blockGO = Instantiate(boxPrefab, position, Quaternion.identity, blocksParent);
                     block = blockGO.GetComponent<Box>();
                     (block as Box).IsOnTarget = false;
                     break;
                 }
-            case GameObjectTypes.BOX_ON_TARGET:
+            case BlockType.BOX_ON_TARGET:
                 {
                     GameObject blockGO = Instantiate(boxPrefab, position, Quaternion.identity, blocksParent);
                     block = blockGO.GetComponent<Box>();
                     (block as Box).IsOnTarget = true;
                     break;
                 }
-            case GameObjectTypes.WALL:
+            case BlockType.WALL:
                 {
                     GameObject blockGO = Instantiate(wallPrefab, position, Quaternion.identity, blocksParent);
                     block = blockGO.GetComponent<Wall>();

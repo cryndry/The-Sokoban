@@ -19,11 +19,11 @@ public class GameAreaManager : LazySingleton<GameAreaManager>
         {
             for (int x = 0; x < levelData.grid_width; x++)
             {
-                GameObjectTypes blockType = levelData.grid[x, y];
+                BlockType blockType = levelData.grid[x, y];
 
-                if (blockType == GameObjectTypes.TARGET ||
-                    blockType == GameObjectTypes.BOX_ON_TARGET ||
-                    blockType == GameObjectTypes.PLAYER_ON_TARGET)
+                if (blockType == BlockType.TARGET ||
+                    blockType == BlockType.BOX_ON_TARGET ||
+                    blockType == BlockType.PLAYER_ON_TARGET)
                 {
                     targetPositions.Add(new Vector2Int(x, y));
                 }

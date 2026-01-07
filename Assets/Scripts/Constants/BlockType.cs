@@ -1,4 +1,4 @@
-public enum GameObjectTypes
+public enum BlockType
 {
     PLAYER = '@',
     BOX = '$',
