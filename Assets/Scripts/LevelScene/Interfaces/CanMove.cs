@@ -2,5 +2,7 @@ using UnityEngine;
 
 public interface ICanMove
 {
-    void Move(Vector2Int direction);
+    public Vector2Int GridPosition { get; set; }
+    public bool IsMoving { get; set; }
+    void MoveTo(Vector2Int targetPosition);
 }

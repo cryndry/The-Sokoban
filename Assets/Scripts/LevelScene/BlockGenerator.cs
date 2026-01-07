@@ -8,6 +8,8 @@ public class BlockGenerator : LazySingleton<BlockGenerator>
     [SerializeField] private GameObject wallPrefab;
     [SerializeField] private GameObject floorPrefab;
     [SerializeField] private GameObject targetPrefab;
+    [SerializeField] private GameObject playerPrefab;
+
 
     public Block GenerateBlock(BlockType type, Vector3 position)
     {
@@ -49,6 +51,13 @@ public class BlockGenerator : LazySingleton<BlockGenerator>
                 {
                     GameObject blockGO = Instantiate(wallPrefab, position, Quaternion.identity, blocksParent);
                     block = blockGO.GetComponent<Wall>();
+                    break;
+                }
+            case BlockType.PLAYER:
+                {
+                    GameObject blockGO = Instantiate(playerPrefab, position, Quaternion.identity, blocksParent);
+                    block = blockGO.GetComponent<Player>();
+                    (block as Player).GridPosition = new Vector2Int((int)position.x, (int)position.y);
                     break;
                 }
             default:

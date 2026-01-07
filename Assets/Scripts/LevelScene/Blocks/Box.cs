@@ -4,6 +4,9 @@ public class Box : Block, ICanMove
 {
     override public BlockType BlockType { get; } = BlockType.BOX;
 
+    public Vector2Int GridPosition { get; set; }
+    public bool IsMoving { get; set; } = false;
+
     private bool isOnTarget = false;
     public bool IsOnTarget
     {
@@ -22,8 +25,21 @@ public class Box : Block, ICanMove
         }
     }
 
-    public void Move(Vector2Int direction)
+    public void MoveTo(Vector2Int targetPosition)
     {
-        transform.position += new Vector3(direction.x, direction.y, 0);
+        IsMoving = true;
+
+        // Simple instant move for now; can be replaced with smooth movement later
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            new Vector3(
+                targetPosition.x,
+                targetPosition.y,
+                transform.position.z
+            ),
+            1f
+        );
+
+        IsMoving = false;
     }
 }

@@ -20,4 +20,10 @@ public class EventManager : LazySingleton<EventManager>
     {
         OnRedo?.Invoke();
     }
+
+    public event Action OnLevelComplete;
+    public void InvokeOnLevelComplete()
+    {
+        OnLevelComplete?.Invoke();
+    }
 }

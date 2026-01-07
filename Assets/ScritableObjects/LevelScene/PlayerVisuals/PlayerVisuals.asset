@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bdc62097d933894680d1d37af83ab00, type: 3}
+  m_Name: PlayerVisuals
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerVisuals
+  leftIdleSprite: {fileID: 21300000, guid: 6dbec457e408f614d9379dc1db290468, type: 3}
+  leftWalkSprites:
+  - {fileID: 21300000, guid: bce26737be90a9949b12de1217a55de1, type: 3}
+  - {fileID: 21300000, guid: 4c4a1292ccd13b1488c125e588a8937a, type: 3}
+  rightIdleSprite: {fileID: 21300000, guid: 49118ffd2c2a9a14f9697a1ab565cd85, type: 3}
+  rightWalkSprites:
+  - {fileID: 21300000, guid: 37557e4eb88798847aba30bd84e9d05e, type: 3}
+  - {fileID: 21300000, guid: a41dc59e7177fd945ba98c6150adb589, type: 3}
+  upIdleSprite: {fileID: 21300000, guid: 881f60480e153c34b9bfc0ed96afab6f, type: 3}
+  upWalkSprites:
+  - {fileID: 21300000, guid: d9805cf5163007e4da23cd89226b8288, type: 3}
+  - {fileID: 21300000, guid: 7dc23080216e46249862b9765b439e0e, type: 3}
+  downIdleSprite: {fileID: 21300000, guid: 7e88119ece25896499480d27900b2d53, type: 3}
+  downWalkSprites:
+  - {fileID: 21300000, guid: f0a12e16850b81d43a632ffdaf3c346f, type: 3}
+  - {fileID: 21300000, guid: 87a42004d37808d4596733a3a11ff0f1, type: 3}
