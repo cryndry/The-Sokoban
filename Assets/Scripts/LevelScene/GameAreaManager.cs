@@ -8,10 +8,22 @@ public class GameAreaManager : LazySingleton<GameAreaManager>
     private int gridWidth;
     private int gridHeight;
 
+    private Player player;
+
 
     private void Start()
     {
         LoadLevel();
+    }
+
+    private void OnEnable()
+    {
+        EventManager.Instance.OnMove += HandleMoveInput;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.OnMove -= HandleMoveInput;
     }
 
     private void LoadLevel()
@@ -34,10 +46,22 @@ public class GameAreaManager : LazySingleton<GameAreaManager>
                     targetPositions.Add(new Vector2Int(x, y));
                 }
 
-                grid[x, y] = BlockGenerator.Instance.GenerateBlock(
+                Block block = BlockGenerator.Instance.GenerateBlock(
                     blockType,
                     new Vector3(x, y, 0)
                 );
+
+                grid[x, y] = block;
+
+                if (block is ICanMove movable)
+                {
+                    movable.GridPosition = new Vector2Int(x, y);
+
+                    if (block is Player p)
+                    {
+                        player = p;
+                    }
+                }
             }
         }
     }
@@ -69,22 +93,20 @@ public class GameAreaManager : LazySingleton<GameAreaManager>
         grid[position.x, position.y] = null;
     }
 
-    public void HandlePlayerMove(Player player, Vector2Int gridPosition, Vector2Int direction)
+    public void HandleMoveInput(Vector2Int direction)
     {
-        Vector2Int targetPosition = gridPosition + direction;
+        Vector2Int targetPosition = player.GridPosition + direction;
 
         if (!IsValidPosition(targetPosition)) return;
+
+        List<Movement> turnMovements = new List<Movement>();
 
         Block targetBlock = GetBlockAtPosition(targetPosition);
 
         if (targetBlock == null)
         {
-            ClearBlockAtPosition(gridPosition);
-            SetBlockAtPosition(targetPosition, player);
-            player.GridPosition = targetPosition;
+            turnMovements.Add(new Movement(player, player.GridPosition, targetPosition));
             player.MoveTo(targetPosition);
-
-            CheckLevelCompletion();
         }
         else if (targetBlock is Box box)
         {
@@ -93,22 +115,44 @@ public class GameAreaManager : LazySingleton<GameAreaManager>
             if (!IsValidPosition(nextPosition)) return;
 
             Block nextBlock = GetBlockAtPosition(nextPosition);
+
             if (nextBlock == null)
             {
-                ClearBlockAtPosition(gridPosition);
-                ClearBlockAtPosition(targetPosition);
-
-                SetBlockAtPosition(nextPosition, box);
+                turnMovements.Add(new Movement(box, box.GridPosition, nextPosition));
                 box.MoveTo(nextPosition);
-                box.IsOnTarget = targetPositions.Contains(nextPosition);
 
-                SetBlockAtPosition(targetPosition, player);
-                player.GridPosition = targetPosition;
+                turnMovements.Add(new Movement(player, player.GridPosition, targetPosition));
                 player.MoveTo(targetPosition);
 
                 CheckLevelCompletion();
             }
         }
+
+        if (turnMovements.Count > 0)
+        {
+            MovementManager.Instance.RegisterMovement(turnMovements);
+        }
+    }
+
+    public void HandlePlayerMove(Player player, Vector2Int targetPosition)
+    {
+        if (GetBlockAtPosition(player.GridPosition) == player)
+        {
+            ClearBlockAtPosition(player.GridPosition);
+        }
+
+        SetBlockAtPosition(targetPosition, player);
+    }
+
+    public void HandleBoxMove(Box box, Vector2Int targetPosition)
+    {
+        if (GetBlockAtPosition(box.GridPosition) == box)
+        {
+            ClearBlockAtPosition(box.GridPosition);
+        }
+
+        SetBlockAtPosition(targetPosition, box);
+        box.IsOnTarget = targetPositions.Contains(targetPosition);
     }
 
     private void CheckLevelCompletion()

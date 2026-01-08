@@ -12,26 +12,20 @@ public class Player : Block, ICanMove
 
     private void OnEnable()
     {
-        EventManager.Instance.OnMove += OnMove;
         CameraController.Instance.SetTarget(transform);
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.OnMove -= OnMove;
         CameraController.Instance.SetTarget(null);
-    }
-
-    public void OnMove(Vector2Int direction)
-    {
-        if (IsMoving) return;
-
-        this.direction = direction;
-        GameAreaManager.Instance.HandlePlayerMove(this, GridPosition, direction);
     }
 
     public void MoveTo(Vector2Int targetPosition)
     {
+        if (IsMoving) return;
+
+        this.direction = targetPosition - GridPosition;
+
         IsMoving = true;
 
         // Simple instant move for now; can be replaced with smooth movement later
@@ -44,6 +38,9 @@ public class Player : Block, ICanMove
             ),
             1f
         );
+
+        GameAreaManager.Instance.HandlePlayerMove(this, targetPosition);
+        GridPosition = targetPosition;
 
         IsMoving = false;
     }

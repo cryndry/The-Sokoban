@@ -40,6 +40,9 @@ public class Box : Block, ICanMove
             1f
         );
 
+        GameAreaManager.Instance.HandleBoxMove(this, targetPosition);
+        GridPosition = targetPosition;
+
         IsMoving = false;
     }
 }

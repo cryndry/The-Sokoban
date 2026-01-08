@@ -57,7 +57,6 @@ public class BlockGenerator : LazySingleton<BlockGenerator>
                 {
                     GameObject blockGO = Instantiate(playerPrefab, position, Quaternion.identity, blocksParent);
                     block = blockGO.GetComponent<Player>();
-                    (block as Player).GridPosition = new Vector2Int((int)position.x, (int)position.y);
                     break;
                 }
             default:
