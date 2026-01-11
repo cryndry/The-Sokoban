@@ -6,7 +6,6 @@ public class BlockGenerator : LazySingleton<BlockGenerator>
 
     [SerializeField] private GameObject boxPrefab;
     [SerializeField] private GameObject wallPrefab;
-    [SerializeField] private GameObject floorPrefab;
     [SerializeField] private GameObject targetPrefab;
     [SerializeField] private GameObject playerPrefab;
 
@@ -14,9 +13,6 @@ public class BlockGenerator : LazySingleton<BlockGenerator>
     public Block GenerateBlock(BlockType type, Vector3 position)
     {
         LevelTheme activeLevelTheme = ThemeManager.Instance.ActiveLevelTheme;
-
-        GameObject floor = Instantiate(floorPrefab, position, Quaternion.identity, blocksParent);
-        floor.GetComponentInChildren<SpriteRenderer>().sprite = activeLevelTheme.floorSprite;
 
         switch (type)
         {
