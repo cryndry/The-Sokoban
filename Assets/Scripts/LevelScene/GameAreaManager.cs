@@ -93,8 +93,11 @@ public class GameAreaManager : LazySingleton<GameAreaManager>
         grid[position.x, position.y] = null;
     }
 
-    public void HandleMoveInput(Vector2Int direction)
+    private void HandleMoveInput(Vector2Int direction)
     {
+        if (player.IsMoving) return;
+        player.Direction = direction;
+
         Vector2Int targetPosition = player.GridPosition + direction;
 
         if (!IsValidPosition(targetPosition)) return;

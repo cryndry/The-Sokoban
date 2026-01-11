@@ -2,13 +2,11 @@ using UnityEngine;
 
 public class Player : Block, ICanMove
 {
-    [SerializeField] private PlayerVisuals playerVisuals;
-
     override public BlockType BlockType { get; } = BlockType.PLAYER;
     public Vector2Int GridPosition { get; set; }
     public bool IsMoving { get; set; } = false;
 
-    private Vector2Int direction = Vector2Int.down;
+    public Vector2Int Direction { get; set; } = Vector2Int.down;
     private Vector3 startWorldPos;
     private Vector3 targetWorldPos;
     private float moveTimer = 0f;
@@ -50,7 +48,6 @@ public class Player : Block, ICanMove
         startWorldPos = transform.position;
         targetWorldPos = new Vector3(targetGridPos.x, targetGridPos.y, transform.position.z);
 
-        direction = targetGridPos - GridPosition;
         GameAreaManager.Instance.HandlePlayerMove(this, targetGridPos);
         GridPosition = targetGridPos;
     }
