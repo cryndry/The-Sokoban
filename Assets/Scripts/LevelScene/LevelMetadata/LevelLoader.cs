@@ -19,7 +19,7 @@ public class LevelLoader : LazySingleton<LevelLoader>
 
     public LevelData LoadLevelData()
     {
-        int level = PlayerPrefs.GetInt(LevelSceneConstants.CURRENT_LEVEL_KEY, 1);
+        int level = PlayerPrefs.GetInt(PlayerPrefConstants.CURRENT_LEVEL_KEY, 1);
         string levelFileName = $"{LevelSceneConstants.LEVEL_FILE_PREFIX}{level}.{LevelSceneConstants.LEVEL_FILE_EXTENSION}";
         string levelFilePath = Path.Combine(
             Application.dataPath,

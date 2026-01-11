@@ -15,9 +15,9 @@ public class LevelManager : LazySingleton<LevelManager>
 
     private void NextLevel()
     {
-        int level = PlayerPrefs.GetInt(LevelSceneConstants.CURRENT_LEVEL_KEY, 1);
-        PlayerPrefs.SetInt(LevelSceneConstants.CURRENT_LEVEL_KEY, level + 1);
+        int level = PlayerPrefs.GetInt(PlayerPrefConstants.CURRENT_LEVEL_KEY, 1);
+        PlayerPrefs.SetInt(PlayerPrefConstants.CURRENT_LEVEL_KEY, level + 1);
         
-        SceneManager.LoadScene(LevelSceneConstants.LEVEL_SCENE_NAME);
+        SceneManager.LoadScene(Scenes.HOME_SCENE);
     }
 }
