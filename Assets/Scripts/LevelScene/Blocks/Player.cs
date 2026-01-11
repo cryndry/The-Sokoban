@@ -9,6 +9,11 @@ public class Player : Block, ICanMove
     public bool IsMoving { get; set; } = false;
 
     private Vector2Int direction = Vector2Int.down;
+    private Vector3 startWorldPos;
+    private Vector3 targetWorldPos;
+    private float moveTimer = 0f;
+    private const float moveDuration = 0.3f;
+
 
     private void OnEnable()
     {
@@ -20,28 +25,33 @@ public class Player : Block, ICanMove
         CameraController.Instance.SetTarget(null);
     }
 
-    public void MoveTo(Vector2Int targetPosition)
+    private void Update()
+    {
+        if (!IsMoving) return;
+        
+        moveTimer += Time.deltaTime;
+        float t = moveTimer / moveDuration;
+        transform.position = Vector3.Lerp(startWorldPos, targetWorldPos, t);
+
+        if (moveTimer >= moveDuration)
+        {
+            transform.position = targetWorldPos;
+            IsMoving = false;
+        }
+    }
+
+    public void MoveTo(Vector2Int targetGridPos)
     {
         if (IsMoving) return;
 
-        this.direction = targetPosition - GridPosition;
-
+        moveTimer = 0f;
         IsMoving = true;
 
-        // Simple instant move for now; can be replaced with smooth movement later
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            new Vector3(
-                targetPosition.x,
-                targetPosition.y,
-                transform.position.z
-            ),
-            1f
-        );
+        startWorldPos = transform.position;
+        targetWorldPos = new Vector3(targetGridPos.x, targetGridPos.y, transform.position.z);
 
-        GameAreaManager.Instance.HandlePlayerMove(this, targetPosition);
-        GridPosition = targetPosition;
-
-        IsMoving = false;
+        direction = targetGridPos - GridPosition;
+        GameAreaManager.Instance.HandlePlayerMove(this, targetGridPos);
+        GridPosition = targetGridPos;
     }
 }
