@@ -32,10 +32,10 @@ public class GameAreaManager : LazySingleton<GameAreaManager>
         gridHeight = levelData.grid_height;
         gridWidth = levelData.grid_width;
 
-        grid = new Block[gridWidth, gridHeight];
-        for (int y = 0; y < gridHeight; y++)
+        grid = new Block[gridHeight, gridWidth];
+        for (int x = 0; x < gridHeight; x++)
         {
-            for (int x = 0; x < gridWidth; x++)
+            for (int y = 0; y < gridWidth; y++)
             {
                 BlockType blockType = levelData.grid[x, y];
 
